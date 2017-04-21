@@ -1,0 +1,158 @@
+<div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a
+
+        href="http://ilee.co.uk"
+
+    >grunt-timer (v0.6.0)</a>
+</h1>
+<h4>Times the duration of each of your grunt tasks automatically and outputs the execution time in milliseconds to the console after each task (or optionally, at the end). It also logs the total time for all logged tasks.</h4>
+<div class="apidocSectionDiv"><a
+    href="#apidoc.tableOfContents"
+    id="apidoc.tableOfContents"
+><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.grunt-timer">module grunt-timer</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.grunt-timer.init">
+            function <span class="apidocSignatureSpan">grunt-timer.</span>init
+            <span class="apidocSignatureSpan">(_grunt, _options)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.grunt-timer" id="apidoc.module.grunt-timer">module grunt-timer</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.grunt-timer.init" id="apidoc.element.grunt-timer.init">
+        function <span class="apidocSignatureSpan">grunt-timer.</span>init
+        <span class="apidocSignatureSpan">(_grunt, _options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">init = function (_grunt, _options) {
+    grunt = _grunt;
+    total = 0;
+
+    options = _options || {};
+
+    deferLogs = !! options.deferLogs;
+    deferLogsAndWriteInLine = !! options.deferLogsAndWriteInLine;
+    friendlyTime = !! options.friendlyTime;
+    totalOnly = !! options.totalOnly;
+    ignoreAlias = options.ignoreAlias || [];
+
+    if (isIgnoredAlias()) {
+        return;
+    }
+
+    options.color = options.color || &#x22;purple&#x22;;
+    if (grunt.option(&#x22;color&#x22;) !== false) {
+        useColor(options.color);
+    }
+
+    hooker.hook(grunt.log, &#x22;header&#x22;, function () {
+        if (!task) {
+            last = new Date();
+            task = grunt.task.current.nameArgs;
+        }
+        if (task === grunt.task.current.nameArgs) {
+            return;
+        }
+        logCurrent();
+        task = grunt.task.current.nameArgs;
+        last = new Date();
+    });
+
+    process.on(&#x22;exit&#x22;, function () {
+        logCurrent();
+        if (deferLogs || deferLogsAndWriteInLine) {
+            logDeferred();
+        }
+        logTotal();
+        hooker.unhook(grunt.log, &#x22;header&#x22;);
+    });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+var timer = require(&#x22;grunt-timer&#x22;);
+```
+
+Add the timer init call at the top of the module.exports function:
+
+```
+module.exports = function (grunt) {
+    timer.<span class="apidocCodeKeywordSpan">init</span>(grunt);
+```
+## Example output
+
+```
+Running &#x22;run:500&#x22; (run) task
+500ms task ran
+Task &#x27;run:500&#x27; took 502ms
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
